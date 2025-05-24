@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ object|yesno:"Update, Create" }} Tag </h1>
+  <form action="" method="POST" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+  <input class ="btn btn-primary" type="submit" value="Submit">
+  <a href="{% url "todo_app:tag-list" %}" class = "btn btn-secondary">Cancel</a>
+  </form>
+
+{% endblock %}
