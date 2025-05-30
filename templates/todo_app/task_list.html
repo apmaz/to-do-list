@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px;">
+    <h1 style="margin: 0;">TODO list</h1>
+    <a href="{% url "todo_app:task-create" %}" class="btn btn-primary">Add task</a>
+  </div>
+
+
+  {% for task in task_list %}
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-weight: bold; font-size: 1.2em;">
+          {{ task.content }}
+          {% if task.is_done %}
+            <span style="color: green"> Done </span>
+          {% else %}
+            <span style="color: red"> Not done </span>
+          {% endif %}
+        </span>
+        <span>
+          {% if task.is_done %}
+            <a href="{% url 'todo_app:task-switch' task.id %}" class="btn btn-secondary">Undo</a>
+          {% else %}
+            <a href="{% url 'todo_app:task-switch' task.id %}" class="btn btn-success">Complete</a>
+          {% endif %}
+        </span>
+      </div>
+
+      <p>
+        Created: {{ task.created_at }}
+        {% if task.deadline %}
+          <span style="color: red">Deadline: {{ task.deadline }}</span>
+        {% endif %}
+      </p>
+
+      <p>
+        <span style="font-size: 1.1em; color: grey">Tags:
+          {% for tag in task.tags.all %}
+            {{ tag }}
+          {% empty %}
+            No tag yet
+          {% endfor %}
+        <a href="{% url "todo_app:task-update" task.id %}">Update</a>
+        <a href="{% url "todo_app:task-delete" task.id %}">Delete</a>
+        </span>
+      </p>
+
+      <hr style="border: none; height: 2px; background-color: darkgray;">
+    </div>
+  {% empty %}
+    <p>No tasks in list</p>
+  {% endfor %}
+{% endblock %}
